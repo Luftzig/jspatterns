@@ -11,7 +11,7 @@ For full copyright and license information, please see the LICENSE file
 ###
 
 should = require 'should'
-patterns = require '../src/jspatterns'
+patterns = require '../src/patterns'
 
 
 describe 'Function guard predicate', () ->
@@ -23,7 +23,7 @@ describe 'Function guard predicate', () ->
       fn = () ->
         'result'
       wrapped = patterns.guard (() -> true), fn
-      wrapped.should.be.a.Function()
+      should(wrapped).type 'function'
 
       res = wrapped()
       res.should.match 'result'
@@ -36,13 +36,6 @@ describe 'Function guard predicate', () ->
     it 'should return the NoMatch object if predicate is false', () ->
       fn = patterns.guard ((a) -> a == 1), ((a) -> a + 2)
       res = fn 2
-      res.should.equal patterns.NoMatch
-
-    it 'should return NoMatch if wrong number of arguments', () ->
-      fn = patterns.guard ((a) -> a == 1), ((a) -> a + 2)
-      res = fn()
-      res.should.equal patterns.NoMatch
-      res = fn 1, 'hello'
       res.should.equal patterns.NoMatch
 
     it 'should use Any to accept any argument (but not undefined)', () ->
